@@ -21,3 +21,9 @@ spring:
   jackson:
     deserialization:
       unwrap_root_value: true
+
+jwt:
+  sign-key: ${JWT_SECRET}
+  token-prefix: Token
+  access-valid-time: 1
+  issuer: Smartix

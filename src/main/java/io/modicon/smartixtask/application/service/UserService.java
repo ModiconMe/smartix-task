@@ -34,6 +34,8 @@ public interface UserService {
                 throw exception(HttpStatus.BAD_REQUEST,
                         "user with telephone number [%s] already exist", telephone);
 
+            //TODO phone number validation
+
             UserEntity user = UserEntity.builder()
                     .telephone(telephone)
                     .password(passwordEncoder.encode(request.getPassword()))
