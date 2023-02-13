@@ -11,14 +11,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString(exclude = {"operations"})
+@ToString(exclude = {"payments"})
 @Getter
 @Setter
 @Entity
 @Table(
-        uniqueConstraints = {
-                @UniqueConstraint(name = "user_email_unique", columnNames = "email")
-        },
         indexes = {
                 @Index(name = "email_index", columnList = "email"),
                 @Index(name = "firstName_index", columnList = "firstName"),

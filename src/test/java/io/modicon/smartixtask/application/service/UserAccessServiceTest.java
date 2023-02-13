@@ -39,6 +39,5 @@ class UserAccessServiceTest {
 
         assertEquals(result.getTelephone(), telephone);
         assertEquals(result.getToken(), token);
-
     }
 }

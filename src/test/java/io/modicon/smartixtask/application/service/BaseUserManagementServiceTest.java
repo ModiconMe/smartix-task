@@ -1,17 +1,21 @@
 package io.modicon.smartixtask.application.service;
 
+import io.modicon.smartixtask.domain.model.Gender;
+import io.modicon.smartixtask.domain.model.UserEntity;
 import io.modicon.smartixtask.domain.repository.UserRepository;
 import io.modicon.smartixtask.infrastructure.exception.ApiException;
 import io.modicon.smartixtask.infrastructure.security.CustomUserDetails;
 import io.modicon.smartixtask.infrastructure.security.jwt.JwtGeneration;
-import io.modicon.smartixtask.web.dto.UserRegisterRequest;
-import io.modicon.smartixtask.web.dto.UserRegisterResponse;
+import io.modicon.smartixtask.web.dto.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.when;
@@ -81,4 +85,59 @@ class BaseUserManagementServiceTest {
                 .hasMessageContaining(String.format("phone number [%s] is invalid", telephone));
     }
 
+    @Test
+    void shouldUpdateUser() {
+        String telephone = "telephone";
+        String password = "password";
+        UserEntity user = UserEntity.builder()
+                .telephone(telephone)
+                .password(password)
+                .build();
+
+        UserUpdateRequest userUpdateRequest = new UserUpdateRequest("firstName", "lastName", "patronymic",
+                "email", Gender.MALE, LocalDate.of(1999, 7, 9));
+
+        UserEntity updatedUser = UserEntity.builder()
+                .telephone(telephone)
+                .password(password)
+                .firstName(userUpdateRequest.getFirstName())
+                .lastName(userUpdateRequest.getLastName())
+                .patronymic(userUpdateRequest.getPatronymic())
+                .email(userUpdateRequest.getEmail())
+                .gender(userUpdateRequest.getGender())
+                .dateOfBirth(userUpdateRequest.getDateOfBirth())
+                .build();
+
+        when(userRepository.findById(telephone)).thenReturn(Optional.of(user));
+        when(userRepository.save(user)).thenReturn(updatedUser);
+
+        UserUpdateResponse result = userService.updateUser(userUpdateRequest, new CustomUserDetails(telephone, password));
+        UserUpdateResponse expected = new UserUpdateResponse(UserDto.builder()
+                .telephone(telephone)
+                .firstName(userUpdateRequest.getFirstName())
+                .lastName(userUpdateRequest.getLastName())
+                .patronymic(userUpdateRequest.getPatronymic())
+                .email(userUpdateRequest.getEmail())
+                .dateOfBirth(userUpdateRequest.getDateOfBirth())
+                .gender(userUpdateRequest.getGender())
+                .balance(user.getBalance())
+                .build());
+
+        assertEquals(result, expected);
+    }
+
+    @Test
+    void shouldNotUpdateUser_whenUserIsNotExist() {
+        String telephone = "telephone";
+        String password = "password";
+
+        UserUpdateRequest userUpdateRequest = new UserUpdateRequest("firstName", "lastName", "patronymic",
+                "email", Gender.MALE, LocalDate.of(1999, 7, 9));
+
+        when(userRepository.findById(telephone)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> userService.updateUser(userUpdateRequest, new CustomUserDetails(telephone, password)))
+                .isInstanceOf(ApiException.class)
+                .hasMessageContaining("user with telephone number [%s] not found", telephone);
+    }
 }

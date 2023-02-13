@@ -57,8 +57,14 @@ class PaymentServiceTest {
         PaymentResponse result = paymentService.pay(new PaymentRequest(payee.getTelephone(), amount),
                 new CustomUserDetails(payer.getTelephone(), payer.getPassword()));
 
-        UserDto payerExpected = new UserDto(payer.getTelephone(), payer.getBalance().subtract(amount), payer.getFirstName(), payer.getPatronymic());
-        UserDto payeeExpected = new UserDto(payee.getTelephone(), payee.getBalance().add(amount), payee.getFirstName(), payee.getPatronymic());
+        UserDto payerExpected = UserDto.builder()
+                .telephone(payer.getTelephone())
+                .balance(payer.getBalance().subtract(amount))
+                .build();
+        UserDto payeeExpected = UserDto.builder()
+                .telephone(payee.getTelephone())
+                .balance(payee.getBalance().add(amount))
+                .build();
 
         assertEquals(result.getPayer(), payerExpected);
         assertEquals(result.getPayee(), payeeExpected);

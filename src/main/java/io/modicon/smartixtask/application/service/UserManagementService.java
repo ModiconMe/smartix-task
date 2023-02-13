@@ -4,10 +4,7 @@ import io.modicon.smartixtask.domain.model.UserEntity;
 import io.modicon.smartixtask.domain.repository.UserRepository;
 import io.modicon.smartixtask.infrastructure.security.CustomUserDetails;
 import io.modicon.smartixtask.infrastructure.security.jwt.JwtGeneration;
-import io.modicon.smartixtask.web.dto.UserBalanceResponse;
-import io.modicon.smartixtask.web.dto.UserLoginResponse;
-import io.modicon.smartixtask.web.dto.UserRegisterRequest;
-import io.modicon.smartixtask.web.dto.UserRegisterResponse;
+import io.modicon.smartixtask.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,6 +25,9 @@ public interface UserManagementService {
 
     UserBalanceResponse getBalance(UserDetails currentUser);
 
+    UserUpdateResponse updateUser(UserUpdateRequest request, UserDetails currentUser);
+
+    @Transactional
     @Slf4j
     @RequiredArgsConstructor
     @Service
@@ -38,7 +38,6 @@ public interface UserManagementService {
         private final JwtGeneration jwtGeneration;
         private final PhoneValidationService phoneValidationService;
 
-        @Transactional
         @Override
         public UserRegisterResponse register(UserRegisterRequest request) {
             String telephone = request.getTelephone();
@@ -69,6 +68,25 @@ public interface UserManagementService {
             UserEntity user = userRepository.findById(telephone)
                     .orElseThrow(() -> exception(HttpStatus.NOT_FOUND, "user with telephone number [%s] not found", telephone));
             return new UserBalanceResponse(telephone, user.getBalance());
+        }
+
+        @Override
+        public UserUpdateResponse updateUser(UserUpdateRequest request, UserDetails currentUser) {
+            String telephone = currentUser.getUsername();
+            UserEntity user = userRepository.findById(telephone).orElseThrow(() ->
+                    exception(HttpStatus.NOT_FOUND, "user with telephone number [%s] not found", telephone));
+
+            UserEntity updatedUser = userRepository.save(user.toBuilder()
+                    .email(request.getEmail() != null ? request.getEmail() : user.getEmail())
+                    .firstName(request.getFirstName() != null ? request.getFirstName() : user.getFirstName())
+                    .lastName(request.getLastName() != null ? request.getLastName() : user.getLastName())
+                    .patronymic(request.getPatronymic() != null ? request.getPatronymic() : user.getPatronymic())
+                    .dateOfBirth(request.getDateOfBirth() != null ? request.getDateOfBirth() : user.getDateOfBirth())
+                    .gender(request.getGender() != null ? request.getGender() : user.getGender())
+                    .build());
+
+            log.info("user {} updated, new user: {}", telephone, updatedUser);
+            return new UserUpdateResponse(UserMapper.mapToDto(updatedUser));
         }
     }
 }

@@ -3,10 +3,7 @@ package io.modicon.smartixtask.web.controller;
 import io.modicon.smartixtask.application.service.SecurityContextHolderService;
 import io.modicon.smartixtask.application.service.UserAccessService;
 import io.modicon.smartixtask.application.service.UserManagementService;
-import io.modicon.smartixtask.web.dto.UserBalanceResponse;
-import io.modicon.smartixtask.web.dto.UserLoginResponse;
-import io.modicon.smartixtask.web.dto.UserRegisterRequest;
-import io.modicon.smartixtask.web.dto.UserRegisterResponse;
+import io.modicon.smartixtask.web.dto.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +24,10 @@ public interface UserController {
     @SecurityRequirement(name = "basicAuth")
     @GetMapping("/balance")
     UserBalanceResponse getBalance();
+
+    @SecurityRequirement(name = "basicAuth")
+    @PostMapping("/update")
+    UserUpdateResponse updateUser(@Valid @RequestBody UserUpdateRequest request);
 
     @RequiredArgsConstructor
     @RestController
@@ -50,6 +51,11 @@ public interface UserController {
         @Override
         public UserBalanceResponse getBalance() {
             return userManagementService.getBalance(securityContextHolderService.getCurrentUser());
+        }
+
+        @Override
+        public UserUpdateResponse updateUser(UserUpdateRequest request) {
+            return userManagementService.updateUser(request, securityContextHolderService.getCurrentUser());
         }
     }
 }
