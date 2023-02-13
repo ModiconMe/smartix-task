@@ -49,5 +49,5 @@ public class UserEntity {
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
             orphanRemoval = true
     )
-    private List<Operation> operations;
+    private List<Payment> payments;
 }

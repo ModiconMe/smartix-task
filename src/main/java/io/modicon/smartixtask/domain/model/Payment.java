@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Builder(toBuilder = true)
 @AllArgsConstructor
@@ -19,19 +20,25 @@ import java.time.LocalDateTime;
                 @Index(name = "date_index", columnList = "date")
         }
 )
-public class Operation {
+public class Payment {
     @Id
     private String id;
 
     @Column(nullable = false)
-    private LocalDateTime date;
+    private ZonedDateTime createdAt;
 
     @Column(nullable = false)
     private BigDecimal sum;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "telephone", nullable = false,
-            foreignKey = @ForeignKey(name = "user_operation_fk")
+    @JoinColumn(name = "payer_id", referencedColumnName = "telephone", nullable = false,
+            foreignKey = @ForeignKey(name = "payer_payment_fk")
     )
-    private UserEntity user;
+    private UserEntity payer;
+
+    @ManyToOne
+    @JoinColumn(name = "payee_id", referencedColumnName = "telephone", nullable = false,
+            foreignKey = @ForeignKey(name = "payee_payment_fk")
+    )
+    private UserEntity payee;
 }
