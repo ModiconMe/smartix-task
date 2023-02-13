@@ -4,6 +4,7 @@ import io.modicon.smartixtask.application.service.UserService;
 import io.modicon.smartixtask.web.dto.UserLoginResponse;
 import io.modicon.smartixtask.web.dto.UserRegisterRequest;
 import io.modicon.smartixtask.web.dto.UserRegisterResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +34,7 @@ public interface UserOperation {
             return userService.register(request);
         }
 
+        @SecurityRequirement(name = "basicAuth")
         @Override
         public UserLoginResponse login() {
             return userService.login();

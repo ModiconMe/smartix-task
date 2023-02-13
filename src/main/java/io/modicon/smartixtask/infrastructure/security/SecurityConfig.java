@@ -10,8 +10,6 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -20,6 +18,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
+
+    private static final String[] SWAGGER = {
+            // -- Swagger UI v3 (OpenAPI)
+            "/v3/api-docs/**",
+            "/api-docs/**",
+            "/swagger-ui/**"
+    };
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthFilter jwtAuthFilter;
@@ -31,6 +36,7 @@ public class SecurityConfig {
                 .cors().and()
 
                 .authorizeHttpRequests()
+                .requestMatchers(SWAGGER).permitAll() // we can permit by roles
                 .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
