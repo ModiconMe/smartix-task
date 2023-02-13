@@ -46,11 +46,8 @@ public class UserEntity {
 
     @Singular
     @OneToMany(
-            cascade = CascadeType.ALL,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
             orphanRemoval = true
-    )
-    @JoinColumn(name = "operation_id", referencedColumnName = "telephone", nullable = false,
-            foreignKey = @ForeignKey(name = "user_telephone_operation_id_fk")
     )
     private List<Operation> operations;
 }

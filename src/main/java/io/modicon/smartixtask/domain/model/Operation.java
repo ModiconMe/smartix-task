@@ -16,8 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(
         indexes = {
-                @Index(name = "date_index", columnList = "date"),
-                @Index(name = "userTelephone_index", columnList = "userTelephone")
+                @Index(name = "date_index", columnList = "date")
         }
 )
 public class Operation {
@@ -28,8 +27,11 @@ public class Operation {
     private LocalDateTime date;
 
     @Column(nullable = false)
-    private String userTelephone;
-
-    @Column(nullable = false)
     private BigDecimal sum;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "telephone", nullable = false,
+            foreignKey = @ForeignKey(name = "user_operation_fk")
+    )
+    private UserEntity user;
 }
