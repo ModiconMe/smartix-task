@@ -16,15 +16,15 @@ class PhoneValidationServiceTest {
         phoneValidationService = new PhoneValidationService.Base();
     }
 
-    @Test
     @ParameterizedTest
     @CsvSource({
-            "+79520009939,false",
+            "+79520009939,true",
+            "89520009939,true",
             "+89520009939,false",
-            "89520009939,false"
+            "+8952000993,false",
     })
-    void shouldValidate(String phone) {
+    void shouldValidate(String phone, boolean result) {
         boolean ru = phoneValidationService.isValidPhoneNumber(phone, "RU");
-        assertTrue(ru);
+        assertEquals(ru, result);
     }
 }
