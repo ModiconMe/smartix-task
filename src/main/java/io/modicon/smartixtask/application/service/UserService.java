@@ -31,16 +31,17 @@ public interface UserService {
         private final UserRepository userRepository;
         private final PasswordEncoder passwordEncoder;
         private final JwtGeneration jwtGeneration;
+        private final PhoneValidationService phoneValidationService;
 
         @Transactional
         @Override
         public UserRegisterResponse register(UserRegisterRequest request) {
             String telephone = request.getTelephone();
-            if (userRepository.findById(telephone).isPresent())
-                throw exception(HttpStatus.BAD_REQUEST,
-                        "user with telephone number [%s] already exist", telephone);
+            if (userRepository.existsById(telephone))
+                throw exception(HttpStatus.BAD_REQUEST, "user with telephone number [%s] already exist", telephone);
 
-            //TODO phone number validation
+            if (!phoneValidationService.isValidPhoneNumber(telephone, "RU"))
+                throw exception(HttpStatus.BAD_REQUEST, "phone number [%s] is invalid", telephone);
 
             UserEntity user = UserEntity.builder()
                     .telephone(telephone)
