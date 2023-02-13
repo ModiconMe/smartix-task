@@ -1,11 +1,9 @@
 package io.modicon.smartixtask.application.service;
 
-import io.modicon.smartixtask.domain.model.UserEntity;
 import io.modicon.smartixtask.domain.repository.UserRepository;
 import io.modicon.smartixtask.infrastructure.exception.ApiException;
 import io.modicon.smartixtask.infrastructure.security.CustomUserDetails;
 import io.modicon.smartixtask.infrastructure.security.jwt.JwtGeneration;
-import io.modicon.smartixtask.web.dto.UserLoginResponse;
 import io.modicon.smartixtask.web.dto.UserRegisterRequest;
 import io.modicon.smartixtask.web.dto.UserRegisterResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,9 +18,9 @@ import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class BaseUserServiceTest {
+class BaseUserManagementServiceTest {
 
-    private UserService userService;
+    private UserManagementService userService;
 
     @Mock
     private UserRepository userRepository;
@@ -38,7 +36,7 @@ class BaseUserServiceTest {
 
     @BeforeEach
     void setUp() {
-        userService = new UserService.Base(userRepository, passwordEncoder, jwtGeneration, phoneValidationService);
+        userService = new UserManagementService.Base(userRepository, passwordEncoder, jwtGeneration, phoneValidationService);
     }
 
     @Test

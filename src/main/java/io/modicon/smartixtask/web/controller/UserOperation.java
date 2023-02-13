@@ -1,6 +1,7 @@
 package io.modicon.smartixtask.web.controller;
 
-import io.modicon.smartixtask.application.service.UserService;
+import io.modicon.smartixtask.application.service.UserAccessService;
+import io.modicon.smartixtask.application.service.UserManagementService;
 import io.modicon.smartixtask.web.dto.UserLoginResponse;
 import io.modicon.smartixtask.web.dto.UserRegisterRequest;
 import io.modicon.smartixtask.web.dto.UserRegisterResponse;
@@ -27,17 +28,18 @@ public interface UserOperation {
     @RequestMapping(BASE_URL_V1)
     class UserController implements UserOperation {
 
-        private final UserService userService;
+        private final UserManagementService userManagementService;
+        private final UserAccessService userAccessService;
 
         @Override
         public UserRegisterResponse register(UserRegisterRequest request) {
-            return userService.register(request);
+            return userManagementService.register(request);
         }
 
         @SecurityRequirement(name = "basicAuth")
         @Override
         public UserLoginResponse login() {
-            return userService.login();
+            return userAccessService.login();
         }
     }
 }

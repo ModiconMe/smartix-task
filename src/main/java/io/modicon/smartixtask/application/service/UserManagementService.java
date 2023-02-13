@@ -17,16 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static io.modicon.smartixtask.infrastructure.exception.ApiException.exception;
 
-public interface UserService {
+public interface UserManagementService {
 
     UserRegisterResponse register(UserRegisterRequest request);
-
-    UserLoginResponse login();
 
     @Slf4j
     @RequiredArgsConstructor
     @Service
-    class Base implements UserService {
+    class Base implements UserManagementService {
 
         private final UserRepository userRepository;
         private final PasswordEncoder passwordEncoder;
@@ -54,15 +52,6 @@ public interface UserService {
             String token = jwtGeneration.generateAccessToken(new CustomUserDetails(telephone, user.getPassword()));
 
             return new UserRegisterResponse(telephone, token);
-        }
-
-        @Override
-        public UserLoginResponse login() {
-            String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            String password = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
-
-            String token = jwtGeneration.generateAccessToken(new CustomUserDetails(username, password));
-            return new UserLoginResponse(username, token);
         }
     }
 }
