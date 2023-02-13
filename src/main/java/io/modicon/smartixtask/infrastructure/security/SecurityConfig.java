@@ -31,9 +31,8 @@ public class SecurityConfig {
                 .cors().and()
 
                 .authorizeHttpRequests()
-//                .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
-//                .anyRequest().authenticated()
-                .anyRequest().permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
+                .anyRequest().authenticated()
                 .and()
 
                 .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)).and()
