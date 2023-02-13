@@ -12,7 +12,6 @@ import java.time.ZonedDateTime;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 @Getter
-@Setter
 @Entity
 @Table(
         indexes = {
@@ -20,6 +19,7 @@ import java.time.ZonedDateTime;
         }
 )
 public class PaymentEntity {
+    @EqualsAndHashCode.Include
     @Id
     private String id;
 

@@ -13,7 +13,6 @@ import java.util.List;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(exclude = {"payments"})
 @Getter
-@Setter
 @Entity
 @Table(
         indexes = {
