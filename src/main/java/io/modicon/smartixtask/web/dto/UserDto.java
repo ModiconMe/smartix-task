@@ -1,9 +1,6 @@
 package io.modicon.smartixtask.web.dto;
 
 import io.modicon.smartixtask.domain.model.Gender;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
