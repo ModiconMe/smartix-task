@@ -1,15 +1,14 @@
 package io.modicon.smartixtask.application.service;
 
-import io.modicon.smartixtask.infrastructure.security.CustomUserDetails;
 import io.modicon.smartixtask.infrastructure.security.jwt.JwtGeneration;
 import io.modicon.smartixtask.web.dto.UserLoginResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 public interface UserAccessService {
 
-    UserLoginResponse login();
+    UserLoginResponse login(UserDetails user);
 
     @RequiredArgsConstructor
     @Service
@@ -18,12 +17,9 @@ public interface UserAccessService {
         private final JwtGeneration jwtGeneration;
 
         @Override
-        public UserLoginResponse login() {
-            String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            String password = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
-
-            String token = jwtGeneration.generateAccessToken(new CustomUserDetails(username, password));
-            return new UserLoginResponse(username, token);
+        public UserLoginResponse login(UserDetails user) {
+            String token = jwtGeneration.generateAccessToken(user);
+            return new UserLoginResponse(user.getUsername(), token);
         }
     }
 }
