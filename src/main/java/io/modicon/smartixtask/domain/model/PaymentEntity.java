@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Builder(toBuilder = true)
@@ -20,7 +19,7 @@ import java.time.ZonedDateTime;
                 @Index(name = "createdAt_index", columnList = "createdAt")
         }
 )
-public class Payment {
+public class PaymentEntity {
     @Id
     private String id;
 
@@ -28,7 +27,7 @@ public class Payment {
     private ZonedDateTime createdAt;
 
     @Column(nullable = false)
-    private BigDecimal sum;
+    private BigDecimal amount;
 
     @ManyToOne
     @JoinColumn(name = "payer_id", referencedColumnName = "telephone", nullable = false,
