@@ -1,5 +1,7 @@
 package io.modicon.smartixtask.application.service;
 
+import io.modicon.smartixtask.application.mapper.PaymentMapper;
+import io.modicon.smartixtask.application.mapper.UserMapper;
 import io.modicon.smartixtask.domain.model.PaymentEntity;
 import io.modicon.smartixtask.domain.model.UserEntity;
 import io.modicon.smartixtask.domain.repository.PaymentRepository;

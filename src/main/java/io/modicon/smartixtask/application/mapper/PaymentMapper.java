@@ -1,4 +1,4 @@
-package io.modicon.smartixtask.application.service;
+package io.modicon.smartixtask.application.mapper;
 
 import io.modicon.smartixtask.domain.model.PaymentEntity;
 import io.modicon.smartixtask.web.dto.PaymentDto;

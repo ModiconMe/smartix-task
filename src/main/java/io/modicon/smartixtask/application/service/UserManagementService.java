@@ -1,5 +1,6 @@
 package io.modicon.smartixtask.application.service;
 
+import io.modicon.smartixtask.application.mapper.UserMapper;
 import io.modicon.smartixtask.domain.model.UserEntity;
 import io.modicon.smartixtask.domain.repository.UserRepository;
 import io.modicon.smartixtask.infrastructure.security.CustomUserDetails;
@@ -8,14 +9,12 @@ import io.modicon.smartixtask.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 import static io.modicon.smartixtask.infrastructure.exception.ApiException.exception;
 
