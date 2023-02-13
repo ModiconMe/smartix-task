@@ -18,3 +18,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
+
+  jackson:
+    deserialization:
+      unwrap_root_value: true
