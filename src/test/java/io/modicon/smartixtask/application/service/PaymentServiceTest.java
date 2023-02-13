@@ -7,6 +7,7 @@ import io.modicon.smartixtask.infrastructure.exception.ApiException;
 import io.modicon.smartixtask.infrastructure.security.CustomUserDetails;
 import io.modicon.smartixtask.web.dto.PaymentRequest;
 import io.modicon.smartixtask.web.dto.PaymentResponse;
+import io.modicon.smartixtask.web.dto.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,8 +57,12 @@ class PaymentServiceTest {
         PaymentResponse result = paymentService.pay(new PaymentRequest(payee.getTelephone(), amount),
                 new CustomUserDetails(payer.getTelephone(), payer.getPassword()));
 
-        assertEquals(result.getMessage(), String.format("user [%s] successfully pay to user [%s] [%s] rub",
-                payer.getTelephone(), payee.getTelephone(), amount));
+        UserDto payerExpected = new UserDto(payer.getTelephone(), payer.getBalance().subtract(amount), payer.getFirstName(), payer.getPatronymic());
+        UserDto payeeExpected = new UserDto(payee.getTelephone(), payee.getBalance().add(amount), payee.getFirstName(), payee.getPatronymic());
+
+        assertEquals(result.getPayer(), payerExpected);
+        assertEquals(result.getPayee(), payeeExpected);
+        assertEquals(result.getAmount(), amount);
     }
 
     @Test

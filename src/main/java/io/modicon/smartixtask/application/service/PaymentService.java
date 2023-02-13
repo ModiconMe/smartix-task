@@ -6,8 +6,10 @@ import io.modicon.smartixtask.domain.repository.PaymentRepository;
 import io.modicon.smartixtask.domain.repository.UserRepository;
 import io.modicon.smartixtask.web.dto.PaymentRequest;
 import io.modicon.smartixtask.web.dto.PaymentResponse;
+import io.modicon.smartixtask.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,10 +35,13 @@ public interface PaymentService {
         @Override
         public PaymentResponse pay(PaymentRequest request, UserDetails currentUser) {
             String payerTelephone = currentUser.getUsername();
+            String payeeTelephone = request.getPayee();
+            if (payerTelephone.equals(payeeTelephone))
+                throw exception(HttpStatus.BAD_REQUEST, "you cannot pay to yourself");
+
             UserEntity payer = userRepository.findById(payerTelephone).orElseThrow(() ->
                     exception(HttpStatus.NOT_FOUND, "user with telephone number [%s] not found", payerTelephone));
 
-            String payeeTelephone = request.getPayee();
             UserEntity payee = userRepository.findById(payeeTelephone).orElseThrow(() ->
                     exception(HttpStatus.NOT_FOUND, "user with telephone number [%s] not found", payeeTelephone));
 
@@ -53,7 +58,7 @@ public interface PaymentService {
                     .build();
 
             payer = payer.toBuilder()
-                    .balance(payer.getBalance().min(amount))
+                    .balance(payer.getBalance().subtract(amount))
                     .build();
             payee = payee.toBuilder()
                     .balance(payee.getBalance().add(amount))
@@ -63,7 +68,7 @@ public interface PaymentService {
             userRepository.save(payee);
             paymentRepository.save(payment);
 
-            return new PaymentResponse(String.format("user [%s] successfully pay to user [%s] [%s] rub", payer.getTelephone(), payee.getTelephone(), amount));
+            return new PaymentResponse(UserMapper.mapToDto(payer), UserMapper.mapToDto(payee), payment.getSum());
         }
     }
 }
