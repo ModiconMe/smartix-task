@@ -20,9 +20,11 @@ public interface UserController {
     @PostMapping("/register")
     UserRegisterResponse register(@Valid @RequestBody UserRegisterRequest request);
 
+    @SecurityRequirement(name = "basicAuth")
     @PostMapping("/login")
     UserLoginResponse login();
 
+    @SecurityRequirement(name = "basicAuth")
     @GetMapping("/balance")
     UserBalanceResponse getBalance();
 
@@ -40,13 +42,11 @@ public interface UserController {
             return userManagementService.register(request);
         }
 
-        @SecurityRequirement(name = "basicAuth")
         @Override
         public UserLoginResponse login() {
             return userAccessService.login(securityContextHolderService.getCurrentUser());
         }
 
-        @SecurityRequirement(name = "basicAuth")
         @Override
         public UserBalanceResponse getBalance() {
             return userManagementService.getBalance(securityContextHolderService.getCurrentUser());
