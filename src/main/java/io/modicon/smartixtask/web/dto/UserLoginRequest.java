@@ -1,18 +1,13 @@
 package io.modicon.smartixtask.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @JsonRootName("user")
 public class UserLoginRequest {
-    @NotEmpty
-    private String telephone;
-    @NotEmpty
-    private String password;
+    private UserDetails userDetails;
 }

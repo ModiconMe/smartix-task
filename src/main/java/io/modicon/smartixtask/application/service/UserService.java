@@ -5,11 +5,14 @@ import io.modicon.smartixtask.domain.repository.UserRepository;
 import io.modicon.smartixtask.infrastructure.exception.ApiException;
 import io.modicon.smartixtask.infrastructure.security.CustomUserDetails;
 import io.modicon.smartixtask.infrastructure.security.jwt.JwtGeneration;
+import io.modicon.smartixtask.web.dto.UserLoginRequest;
+import io.modicon.smartixtask.web.dto.UserLoginResponse;
 import io.modicon.smartixtask.web.dto.UserRegisterRequest;
 import io.modicon.smartixtask.web.dto.UserRegisterResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,7 +24,8 @@ public interface UserService {
 
     UserRegisterResponse register(UserRegisterRequest request);
 
-    @Transactional
+    UserLoginResponse login();
+
     @Slf4j
     @RequiredArgsConstructor
     @Service
@@ -31,6 +35,7 @@ public interface UserService {
         private final PasswordEncoder passwordEncoder;
         private final JwtGeneration jwtGeneration;
 
+        @Transactional
         @Override
         public UserRegisterResponse register(UserRegisterRequest request) {
             String telephone = request.getTelephone();
@@ -51,6 +56,15 @@ public interface UserService {
             String token = jwtGeneration.generateAccessToken(new CustomUserDetails(telephone, user.getPassword()));
 
             return new UserRegisterResponse(telephone, token);
+        }
+
+        @Override
+        public UserLoginResponse login() {
+            String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String password = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+
+            String token = jwtGeneration.generateAccessToken(new CustomUserDetails(username, password));
+            return new UserLoginResponse(username, token);
         }
     }
 }
