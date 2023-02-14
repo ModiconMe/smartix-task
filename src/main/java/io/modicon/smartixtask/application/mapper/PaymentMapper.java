@@ -6,6 +6,6 @@ import io.modicon.smartixtask.web.dto.PaymentDto;
 public class PaymentMapper {
     public static PaymentDto mapToDto(PaymentEntity payment) {
         return new PaymentDto(payment.getCreatedAt(), payment.getAmount(),
-                payment.getPayee().getTelephone(), payment.getPayer().getTelephone());
+                payment.getPayer().getTelephone());
     }
 }

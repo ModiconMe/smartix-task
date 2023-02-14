@@ -178,8 +178,8 @@ class PaymentServiceTest {
         UserPaymentsResponse result = paymentService.getUserPayment(String.valueOf(limit), String.valueOf(page),
                 new CustomUserDetails(user1.getTelephone(), user1.getPassword()));
 
-        PaymentDto paymentDto1 = new PaymentDto(payment1.getCreatedAt(), payment1.getAmount(), payment1.getPayee().getTelephone(), payment1.getPayer().getTelephone());
-        PaymentDto paymentDto2 = new PaymentDto(payment2.getCreatedAt(), payment2.getAmount(), payment2.getPayee().getTelephone(), payment2.getPayer().getTelephone());
+        PaymentDto paymentDto1 = new PaymentDto(payment1.getCreatedAt(), payment1.getAmount(), payment1.getPayer().getTelephone());
+        PaymentDto paymentDto2 = new PaymentDto(payment2.getCreatedAt(), payment2.getAmount(), payment2.getPayer().getTelephone());
 
         List<PaymentDto> expected = List.of(paymentDto1, paymentDto2);
 

@@ -6,7 +6,6 @@ import java.time.ZonedDateTime;
 public record PaymentDto(
         ZonedDateTime createdAt,
         BigDecimal amount,
-        String payee,
         String payer
 ) {
 }
