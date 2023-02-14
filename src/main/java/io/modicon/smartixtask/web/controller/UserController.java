@@ -26,7 +26,7 @@ public interface UserController {
     UserBalanceResponse getBalance();
 
     @SecurityRequirement(name = "basicAuth")
-    @PostMapping("/update")
+    @PutMapping("/update")
     UserUpdateResponse updateUser(@Valid @RequestBody UserUpdateRequest request);
 
     @RequiredArgsConstructor

@@ -51,8 +51,4 @@ public class SecurityConfig {
                 .build();
     }
 
-    /**
-     * Encrypt user password
-     */
-
 }
