@@ -36,5 +36,5 @@ http://localhost:8080/api-docs - документация.
 
 Deploy версия с секретными полями определенными в файле .env
 
-    `docker compose -f docker-compose-deploy.yml up`
+    docker compose -f docker-compose-deploy.yml up
 
