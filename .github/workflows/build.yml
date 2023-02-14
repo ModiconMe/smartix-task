@@ -28,3 +28,11 @@ jobs:
 
       - name: Push to docker hub
         run: ./build.sh modiconme ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: 'Run tests with JaCoCo'
+        shell: bash
+        run: |
+          ./gradlew --version
+          ./gradlew --scan --no-parallel --stacktrace --warning-mode=all jacocoReport
+
+      - uses: codecov/codecov-action@v1

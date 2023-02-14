@@ -5,8 +5,8 @@ build/
 !**/src/test/**/build/
 **.log
 /logs
-.env
-docker-compose-deploy.yml
+#.env
+#docker-compose-deploy.yml
 
 ### IntelliJ IDEA ###
 .idea
