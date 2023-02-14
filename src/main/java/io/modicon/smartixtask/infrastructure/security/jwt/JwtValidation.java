@@ -1,11 +1,14 @@
 package io.modicon.smartixtask.infrastructure.security.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.Optional;
 
 public interface JwtValidation {
@@ -18,19 +21,22 @@ public interface JwtValidation {
     class Base implements JwtValidation {
 
         private final UserDetailsService userDetailsService;
-        private final JwtUtils jwtUtils;
+        private final JwtConfig jwtConfig;
 
         @Override
         public boolean isTokenValid(String token) {
-            boolean expired = jwtUtils.isTokenExpired(token);
-            Optional<UserDetails> userDetails = Optional.ofNullable(
-                    userDetailsService.loadUserByUsername(extractUsername(token)));
-            return (userDetails.isPresent() && !expired);
+            try {
+                Optional<UserDetails> userDetails = Optional.ofNullable(
+                        userDetailsService.loadUserByUsername(extractUsername(token)));
+                return (userDetails.isPresent());
+            } catch (JwtException e) {
+                return false;
+            }
         }
 
         @Override
         public String extractUsername(String token) {
-            Claims claims = jwtUtils.extractClaims(token);
+            Claims claims = Jwts.parserBuilder().setSigningKey(jwtConfig.getKey()).build().parseClaimsJws(token).getBody();
             return claims.getSubject();
         }
     }

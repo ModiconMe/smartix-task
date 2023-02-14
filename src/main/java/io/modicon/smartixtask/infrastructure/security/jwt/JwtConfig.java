@@ -32,7 +32,11 @@ public class JwtConfig {
         return Keys.hmacShaKeyFor(singKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public Date getAccessIssueAt() {
+    public Date getTokenExpiredTime() {
         return new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(accessValidTime));
+    }
+
+    public Date getIssueAt() {
+        return new Date(System.currentTimeMillis());
     }
 }

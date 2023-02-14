@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,8 +23,8 @@ public interface JwtGeneration {
                     .setSubject(userDetails.getUsername())
                     .setIssuer(jwtConfig.getIssuer())
                     .claim("authorities", userDetails.getAuthorities())
-                    .setIssuedAt(new Date(System.currentTimeMillis()))
-                    .setExpiration(jwtConfig.getAccessIssueAt())
+                    .setIssuedAt(jwtConfig.getIssueAt())
+                    .setExpiration(jwtConfig.getTokenExpiredTime())
                     .signWith(jwtConfig.getKey()).compact();
         }
     }
