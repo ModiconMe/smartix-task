@@ -5,11 +5,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
