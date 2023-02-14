@@ -1,4 +1,4 @@
-package io.modicon.smartixtask.infrastructure.openapi;
+package io.modicon.smartixtask.infrastructure.config;
 
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;

@@ -25,6 +25,7 @@ public class SecurityConfig {
             "/api-docs/**",
             "/swagger-ui/**"
     };
+    private static final String REGISTER = "/api/v1/users/register";
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthFilter jwtAuthFilter;
@@ -37,7 +38,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests()
                 .requestMatchers(SWAGGER).permitAll() // we can permit by roles
-                .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
+                .requestMatchers(HttpMethod.POST, REGISTER).permitAll()
                 .anyRequest().authenticated()
                 .and()
 
