@@ -4,6 +4,11 @@ import io.modicon.smartixtask.application.service.SecurityContextHolderService;
 import io.modicon.smartixtask.application.service.UserAccessService;
 import io.modicon.smartixtask.application.service.UserManagementService;
 import io.modicon.smartixtask.web.dto.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,17 +19,51 @@ public interface UserController {
 
     String BASE_URL_V1 = "/api/v1/users";
 
+    @Operation(summary = "register user by telephone and password")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found user payments",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = PaymentResponse.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid data provided.",
+                    content = @Content)})
     @PostMapping("/register")
     UserRegisterResponse register(@Valid @RequestBody UserRegisterRequest request);
 
+    @Operation(summary = "return jwt token")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Jwt token successfully generated",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = PaymentResponse.class)) }),
+            @ApiResponse(responseCode = "401", description = "Authentication error.",
+                    content = @Content) })
     @SecurityRequirement(name = "basicAuth")
     @PostMapping("/login")
     UserLoginResponse login();
 
+    @Operation(summary = "get user balance")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Jwt token successfully generated",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = PaymentResponse.class)) }),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content),
+            @ApiResponse(responseCode = "401", description = "Authentication error.",
+                    content = @Content) })
     @SecurityRequirement(name = "basicAuth")
     @GetMapping("/balance")
     UserBalanceResponse getBalance();
 
+    @Operation(summary = "update user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Jwt token successfully generated",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = PaymentResponse.class)) }),
+            @ApiResponse(responseCode = "400", description = "Invalid data provided.",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found",
+                    content = @Content),
+            @ApiResponse(responseCode = "401", description = "Authentication error.",
+                    content = @Content) })
     @SecurityRequirement(name = "basicAuth")
     @PutMapping("/update")
     UserUpdateResponse updateUser(@Valid @RequestBody UserUpdateRequest request);
