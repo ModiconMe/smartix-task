@@ -10,7 +10,6 @@ java {
 }
 
 group 'io.modicon'
-version '1.0'
 
 repositories {
     mavenCentral()

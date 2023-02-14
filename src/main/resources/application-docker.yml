@@ -7,19 +7,20 @@ springdoc:
 
 spring:
   datasource:
-    username: ${POSTGRES_USER}
-    url: ${POSTGRES_URL}
-    password: ${POSTGRES_PASSWORD}
+    username: postgres
+    url: jdbc:postgresql://postgres:5432/postgres
+    password: root
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+    show-sql: true
 
 jwt:
-  sign-key: ${JWT_SECRET}
+  sign-key: secretsecretsecretsecretsecretsecret
   token-prefix: Token
   access-valid-time: 1
   issuer: Smartix

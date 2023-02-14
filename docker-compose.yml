@@ -1,0 +1,30 @@
+services:
+  smartix-app:
+    image: modiconme/smartix:latest
+    container_name: smartix
+    ports:
+      - "8080:8080"
+    networks:
+      - stock-app-network
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    depends_on:
+      - postgres
+    restart: always
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      PGDATA: /data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - stock-app-network
+    restart: unless-stopped
+
+networks:
+  stock-app-network:
+    driver: bridge
