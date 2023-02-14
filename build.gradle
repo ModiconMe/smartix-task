@@ -23,9 +23,9 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
-    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+    implementation "io.jsonwebtoken:jjwt-api:${jwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-impl:${jwtVersion}"
+    runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jwtVersion}"
 
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${openApiVersion}"
 
@@ -34,9 +34,9 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    testRuntimeOnly 'com.h2database:h2:2.1.214'
+    testRuntimeOnly "com.h2database:h2:${h2Version}"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2'
+    testImplementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jsrVersion}"
 }
 
 test {
