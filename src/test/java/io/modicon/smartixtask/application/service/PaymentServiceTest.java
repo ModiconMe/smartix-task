@@ -75,6 +75,27 @@ class PaymentServiceTest {
     }
 
     @Test
+    void shouldNotPay_whenPayToYourself() {
+        UserEntity payer = UserEntity.builder()
+                .telephone("payer_id")
+                .password("payer_password")
+                .balance(BigDecimal.valueOf(1000))
+                .build();
+
+        UserEntity payee = UserEntity.builder()
+                .telephone("payer_id")
+                .password("payer_password")
+                .balance(BigDecimal.valueOf(1000))
+                .build();
+
+        BigDecimal amount = BigDecimal.valueOf(500);
+        assertThatThrownBy(() -> paymentService.pay(new PaymentRequest(payee.getTelephone(), amount),
+                new CustomUserDetails(payer.getTelephone(), payer.getPassword())))
+                .isInstanceOf(ApiException.class)
+                .hasMessageContaining("you cannot pay to yourself");
+    }
+
+    @Test
     void shouldNotPay_whenBadCredentials() {
         UserEntity payer = UserEntity.builder()
                 .telephone("payer_id")

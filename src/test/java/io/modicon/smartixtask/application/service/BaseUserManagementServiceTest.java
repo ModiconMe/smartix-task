@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -137,6 +138,42 @@ class BaseUserManagementServiceTest {
         when(userRepository.findById(telephone)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> userService.updateUser(userUpdateRequest, new CustomUserDetails(telephone, password)))
+                .isInstanceOf(ApiException.class)
+                .hasMessageContaining("user with telephone number [%s] not found", telephone);
+    }
+
+    @Test
+    void shouldGetUserBalance() {
+        String telephone = "telephone";
+        String password = "password";
+
+        BigDecimal balance = BigDecimal.valueOf(1500);
+        UserEntity user = UserEntity.builder()
+                .telephone(telephone)
+                .password(password)
+                .balance(balance)
+                .build();
+        CustomUserDetails userDetails = new CustomUserDetails(telephone, password);
+
+        when(userRepository.findById(telephone)).thenReturn(Optional.of(user));
+
+        UserBalanceResponse result = userService.getBalance(userDetails);
+
+        UserBalanceResponse expected = new UserBalanceResponse(telephone, balance);
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void shouldNotGetUserBalance_whenUserIsNotFound() {
+        String telephone = "telephone";
+        String password = "password";
+
+        CustomUserDetails userDetails = new CustomUserDetails(telephone, password);
+
+        when(userRepository.findById(telephone)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> userService.getBalance(userDetails))
                 .isInstanceOf(ApiException.class)
                 .hasMessageContaining("user with telephone number [%s] not found", telephone);
     }
