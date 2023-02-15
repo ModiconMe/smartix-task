@@ -58,7 +58,7 @@ public interface UserManagementService {
 
             String token = jwtGeneration.generateAccessToken(new CustomUserDetails(telephone, user.getPassword()));
 
-            return new UserRegisterResponse(telephone, token);
+            return new UserRegisterResponse(userMapper.apply(user), token);
         }
 
         @Transactional(readOnly = true)

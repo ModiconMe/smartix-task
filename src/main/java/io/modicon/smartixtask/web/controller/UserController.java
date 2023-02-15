@@ -29,7 +29,7 @@ public interface UserController {
             @ApiResponse(responseCode = "400", description = "Invalid data provided.",
                     content = @Content)})
     @PostMapping("/register")
-    UserRegisterResponse register(@Valid @RequestBody UserRegisterRequest request);
+    ResponseEntity<?> register(@Valid @RequestBody UserRegisterRequest request);
 
     @Operation(summary = "return jwt token")
     @ApiResponses(value = {
@@ -80,12 +80,15 @@ public interface UserController {
         private final SecurityContextHolderService securityContextHolderService;
 
         @Override
-        public UserRegisterResponse register(UserRegisterRequest request) {
-            return userManagementService.register(request);
+        public ResponseEntity<?> register(UserRegisterRequest request) {
+            UserRegisterResponse response = userManagementService.register(request);
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.AUTHORIZATION, response.getToken())
+                    .body(response.getUser());
         }
 
         @Override
-        public ResponseEntity<?>  login() {
+        public ResponseEntity<?> login() {
             var response = userAccessService.login(securityContextHolderService.getCurrentUser());
             return ResponseEntity.ok()
                     .header(HttpHeaders.AUTHORIZATION, response.getToken())

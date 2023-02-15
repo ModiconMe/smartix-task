@@ -60,7 +60,12 @@ class BaseUserManagementServiceTest {
 
         UserRegisterResponse result = userService.register(new UserRegisterRequest(telephone, password));
 
-        assertEquals(result.getTelephone(), telephone);
+        UserDto userDto = UserDto.builder()
+                .telephone(telephone)
+                .balance(BigDecimal.valueOf(1000))
+                .build();
+
+        assertEquals(result.getUser(), userDto);
         assertEquals(result.getToken(), token);
     }
 

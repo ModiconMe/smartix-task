@@ -60,9 +60,14 @@ class UserControllerTest {
 
     @Test
     void shouldRegisterUser() throws Exception {
-        UserRegisterRequest request = new UserRegisterRequest("telephone", "password");
+        String telephone = "telephone";
+        UserRegisterRequest request = new UserRegisterRequest(telephone, "password");
         String token = "token";
-        UserRegisterResponse response = new UserRegisterResponse(request.getTelephone(), token);
+        UserDto userDto = UserDto.builder()
+                .telephone(telephone)
+                .balance(BigDecimal.valueOf(1000))
+                .build();
+        UserRegisterResponse response = new UserRegisterResponse(userDto, token);
 
         when(userManagementService.register(request)).thenReturn(response);
 
@@ -74,7 +79,7 @@ class UserControllerTest {
                 .getContentAsString(StandardCharsets.UTF_8);
 
         Mockito.verify(userManagementService, times(1)).register(request);
-        var result = objectMapper.writeValueAsString(response);
+        var result = objectMapper.writeValueAsString(response.getUser());
         assertEquals(result, json);
     }
 
