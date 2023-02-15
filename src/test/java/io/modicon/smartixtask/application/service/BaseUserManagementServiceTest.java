@@ -1,5 +1,6 @@
 package io.modicon.smartixtask.application.service;
 
+import io.modicon.smartixtask.application.mapper.UserMapper;
 import io.modicon.smartixtask.domain.model.Gender;
 import io.modicon.smartixtask.domain.model.UserEntity;
 import io.modicon.smartixtask.domain.repository.UserRepository;
@@ -39,9 +40,11 @@ class BaseUserManagementServiceTest {
     @Mock
     private PhoneValidationService phoneValidationService;
 
+    private UserMapper userMapper = new UserMapper();
+
     @BeforeEach
     void setUp() {
-        userService = new UserManagementService.Base(userRepository, passwordEncoder, jwtGeneration, phoneValidationService);
+        userService = new UserManagementService.Base(userRepository, userMapper, passwordEncoder, jwtGeneration, phoneValidationService);
     }
 
     @Test

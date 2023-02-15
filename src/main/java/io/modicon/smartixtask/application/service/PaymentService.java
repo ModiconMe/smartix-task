@@ -35,6 +35,8 @@ public interface PaymentService {
     class Base implements PaymentService {
 
         private final UserRepository userRepository;
+        private final UserMapper userMapper;
+        private final PaymentMapper paymentMapper;
         private final PaymentRepository paymentRepository;
 
         @Override
@@ -73,7 +75,7 @@ public interface PaymentService {
             userRepository.save(payee);
             paymentRepository.save(payment);
 
-            return new PaymentResponse(UserMapper.mapToDto(payer), UserMapper.mapToDto(payee), payment.getAmount());
+            return new PaymentResponse(userMapper.apply(payer), userMapper.apply(payee), payment.getAmount());
         }
 
         @Transactional(readOnly = true)
@@ -85,7 +87,7 @@ public interface PaymentService {
 
             List<PaymentEntity> payments = paymentRepository.findByPayee(user, PageRequest.of(Integer.parseInt(page), Integer.parseInt(limit)));
 
-            return new UserPaymentsResponse(payments.stream().map(PaymentMapper::mapToDto).toList());
+            return new UserPaymentsResponse(payments.stream().map(paymentMapper).toList());
         }
     }
 }

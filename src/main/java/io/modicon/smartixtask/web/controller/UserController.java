@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +40,7 @@ public interface UserController {
                     content = @Content) })
     @SecurityRequirement(name = "basicAuth")
     @PostMapping("/login")
-    UserLoginResponse login();
+    ResponseEntity<?> login();
 
     @Operation(summary = "get user balance")
     @ApiResponses(value = {
@@ -83,8 +85,11 @@ public interface UserController {
         }
 
         @Override
-        public UserLoginResponse login() {
-            return userAccessService.login(securityContextHolderService.getCurrentUser());
+        public ResponseEntity<?>  login() {
+            var login = userAccessService.login(securityContextHolderService.getCurrentUser());
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.AUTHORIZATION, login.getToken())
+                    .build();
         }
 
         @Override

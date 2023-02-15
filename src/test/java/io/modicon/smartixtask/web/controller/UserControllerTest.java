@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -87,14 +88,13 @@ class UserControllerTest {
 
         when(userAccessService.login(currentUser)).thenReturn(response);
 
-        var json = mockMvc.perform(post(BASE_URL + "/login"))
+        var header = mockMvc.perform(post(BASE_URL + "/login"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse()
-                .getContentAsString(StandardCharsets.UTF_8);
+                .getHeader(HttpHeaders.AUTHORIZATION);
 
         Mockito.verify(userAccessService, times(1)).login(currentUser);
-        var result = objectMapper.writeValueAsString(response);
-        assertEquals(result, json);
+        assertEquals(response.getToken(), header);
     }
 
     @Test

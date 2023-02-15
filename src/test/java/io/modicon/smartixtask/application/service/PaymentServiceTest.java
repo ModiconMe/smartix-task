@@ -1,5 +1,7 @@
 package io.modicon.smartixtask.application.service;
 
+import io.modicon.smartixtask.application.mapper.PaymentMapper;
+import io.modicon.smartixtask.application.mapper.UserMapper;
 import io.modicon.smartixtask.domain.model.PaymentEntity;
 import io.modicon.smartixtask.domain.model.UserEntity;
 import io.modicon.smartixtask.domain.repository.PaymentRepository;
@@ -33,10 +35,12 @@ class PaymentServiceTest {
     private UserRepository userRepository;
     @Mock
     private PaymentRepository paymentRepository;
+    private UserMapper userMapper = new UserMapper();
+    private PaymentMapper paymentMapper = new PaymentMapper();
 
     @BeforeEach
     void setUp() {
-        paymentService = new PaymentService.Base(userRepository, paymentRepository);
+        paymentService = new PaymentService.Base(userRepository, userMapper, paymentMapper, paymentRepository);
     }
 
     @Test

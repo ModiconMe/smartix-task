@@ -33,6 +33,7 @@ public interface UserManagementService {
     class Base implements UserManagementService {
 
         private final UserRepository userRepository;
+        private final UserMapper userMapper;
         private final PasswordEncoder passwordEncoder;
         private final JwtGeneration jwtGeneration;
         private final PhoneValidationService phoneValidationService;
@@ -85,7 +86,7 @@ public interface UserManagementService {
                     .build());
 
             log.info("user {} updated, new user: {}", telephone, updatedUser);
-            return new UserUpdateResponse(UserMapper.mapToDto(updatedUser));
+            return new UserUpdateResponse(userMapper.apply(updatedUser));
         }
     }
 }
