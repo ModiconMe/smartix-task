@@ -15,7 +15,7 @@ import java.time.ZonedDateTime;
 @Entity
 @Table(
         indexes = {
-                @Index(name = "createdAt_index", columnList = "createdAt")
+                @Index(name = "payee_index", columnList = "payee_id")
         }
 )
 public class PaymentEntity {

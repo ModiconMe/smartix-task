@@ -14,14 +14,6 @@ import java.util.List;
 @ToString(exclude = {"payments"})
 @Getter
 @Entity
-@Table(
-        indexes = {
-                @Index(name = "email_index", columnList = "email"),
-                @Index(name = "firstName_index", columnList = "firstName"),
-                @Index(name = "lastName_index", columnList = "lastName"),
-                @Index(name = "patronymic_index", columnList = "patronymic")
-        }
-)
 public class UserEntity {
 
     @EqualsAndHashCode.Include
