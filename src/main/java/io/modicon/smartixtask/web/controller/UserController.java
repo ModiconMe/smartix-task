@@ -86,10 +86,10 @@ public interface UserController {
 
         @Override
         public ResponseEntity<?>  login() {
-            var login = userAccessService.login(securityContextHolderService.getCurrentUser());
+            var response = userAccessService.login(securityContextHolderService.getCurrentUser());
             return ResponseEntity.ok()
-                    .header(HttpHeaders.AUTHORIZATION, login.getToken())
-                    .build();
+                    .header(HttpHeaders.AUTHORIZATION, response.getToken())
+                    .body(response.getUser());
         }
 
         @Override

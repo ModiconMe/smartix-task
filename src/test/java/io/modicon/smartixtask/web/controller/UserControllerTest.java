@@ -80,21 +80,26 @@ class UserControllerTest {
 
     @Test
     void shouldLoginUser() throws Exception {
-        CustomUserDetails currentUser = new CustomUserDetails("telephone", "password");
+        String telephone = "telephone";
+        CustomUserDetails currentUser = new CustomUserDetails(telephone, "password");
         when(securityContextHolderService.getCurrentUser()).thenReturn(currentUser);
 
         String token = "token";
-        UserLoginResponse response = new UserLoginResponse(currentUser.getUsername(), token);
+        UserDto userDto = UserDto.builder()
+                .telephone(telephone)
+                .build();
+        UserLoginResponse response = new UserLoginResponse(userDto, token);
 
         when(userAccessService.login(currentUser)).thenReturn(response);
 
-        var header = mockMvc.perform(post(BASE_URL + "/login"))
+        var httpResponse = mockMvc.perform(post(BASE_URL + "/login"))
                 .andExpect(status().isOk())
-                .andReturn().getResponse()
-                .getHeader(HttpHeaders.AUTHORIZATION);
+                .andReturn().getResponse();
 
         Mockito.verify(userAccessService, times(1)).login(currentUser);
-        assertEquals(response.getToken(), header);
+        assertEquals(response.getToken(), httpResponse.getHeader(HttpHeaders.AUTHORIZATION));
+        var expected = objectMapper.writeValueAsString(userDto);
+        assertEquals(expected, httpResponse.getContentAsString(StandardCharsets.UTF_8));
     }
 
     @Test
