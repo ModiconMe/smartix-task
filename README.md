@@ -19,6 +19,7 @@ http://localhost:8080/api-docs - документация.
 ### Technology
 - Spring Boot 3.0.1 и Java 17
 - Spring Data JPA + PosgreSQL
+- Spring Security + jwt
 - OpenApi
 - Logback
 - JUnit 5 + Mockito для тестирования
