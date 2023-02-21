@@ -30,8 +30,6 @@ dependencies {
 
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${openApiVersion}"
 
-    implementation "com.googlecode.libphonenumber:libphonenumber:${googlePhoneValidatorVersion}"
-
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 

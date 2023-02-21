@@ -22,9 +22,12 @@ class PhoneValidationServiceTest {
             "89520009939,true",
             "+89520009939,false",
             "+8952000993,false",
+            "9520009939,false",
+            "890499944344,false",
+            "890499944344234,false"
     })
-    void shouldValidate(String phone, boolean result) {
-        boolean ru = phoneValidationService.isValidPhoneNumber(phone, "RU");
-        assertEquals(ru, result);
+    void shouldValidate(String phone, boolean expected) {
+        boolean actual = phoneValidationService.isValidPhoneNumber(phone, "RU");
+        assertEquals(expected, actual);
     }
 }

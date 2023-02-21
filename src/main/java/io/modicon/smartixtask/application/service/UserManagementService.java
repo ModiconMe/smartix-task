@@ -41,11 +41,11 @@ public interface UserManagementService {
         @Override
         public UserRegisterResponse register(UserRegisterRequest request) {
             String telephone = request.getTelephone();
-            if (userRepository.existsById(telephone))
-                throw exception(HttpStatus.BAD_REQUEST, "user with telephone number [%s] already exist", telephone);
-
             if (!phoneValidationService.isValidPhoneNumber(telephone, "RU"))
                 throw exception(HttpStatus.BAD_REQUEST, "phone number [%s] is invalid", telephone);
+
+            if (userRepository.existsById(telephone))
+                throw exception(HttpStatus.BAD_REQUEST, "user with telephone number [%s] already exist", telephone);
 
             UserEntity user = UserEntity.builder()
                     .telephone(telephone)

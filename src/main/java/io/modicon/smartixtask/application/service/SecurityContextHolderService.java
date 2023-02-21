@@ -13,10 +13,7 @@ public interface SecurityContextHolderService {
     class Base implements SecurityContextHolderService {
         @Override
         public UserDetails getCurrentUser() {
-            String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            String password = (String) SecurityContextHolder.getContext().getAuthentication().getCredentials();
-
-            return new CustomUserDetails(username, password);
+            return (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         }
     }
 }
