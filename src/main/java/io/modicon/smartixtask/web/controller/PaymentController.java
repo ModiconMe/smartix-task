@@ -38,7 +38,7 @@ public interface PaymentController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found user payments",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = PaymentResponse.class)) }),
+                            schema = @Schema(implementation = UserPaymentsResponse.class)) }),
             @ApiResponse(responseCode = "404", description = "User not found.",
                     content = @Content),
             @ApiResponse(responseCode = "401", description = "Authentication error.",

@@ -24,8 +24,7 @@ public interface UserController {
     @Operation(summary = "register user by telephone and password")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found user payments",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = PaymentResponse.class)) }),
+                    content = { @Content(mediaType = "application/json") }),
             @ApiResponse(responseCode = "400", description = "Invalid data provided.",
                     content = @Content)})
     @PostMapping("/register")
@@ -34,8 +33,7 @@ public interface UserController {
     @Operation(summary = "return jwt token")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Jwt token successfully generated",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = PaymentResponse.class)) }),
+                    content = { @Content(mediaType = "application/json") }),
             @ApiResponse(responseCode = "401", description = "Authentication error.",
                     content = @Content) })
     @SecurityRequirement(name = "basicAuth")
@@ -46,7 +44,7 @@ public interface UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Jwt token successfully generated",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = PaymentResponse.class)) }),
+                            schema = @Schema(implementation = UserBalanceResponse.class)) }),
             @ApiResponse(responseCode = "404", description = "User not found",
                     content = @Content),
             @ApiResponse(responseCode = "401", description = "Authentication error.",
@@ -59,7 +57,7 @@ public interface UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Jwt token successfully generated",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = PaymentResponse.class)) }),
+                            schema = @Schema(implementation = UserUpdateResponse.class)) }),
             @ApiResponse(responseCode = "400", description = "Invalid data provided.",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "User not found",
