@@ -74,6 +74,7 @@ class BaseUserManagementServiceTest {
         String telephone = "telephone";
         String password = "password";
 
+        when(phoneValidationService.isValidPhoneNumber(telephone, "RU")).thenReturn(true);
         when(userRepository.existsById(telephone)).thenReturn(true);
 
         assertThatThrownBy(() -> userService.register(new UserRegisterRequest(telephone, password)))
@@ -86,7 +87,6 @@ class BaseUserManagementServiceTest {
         String telephone = "telephone";
         String password = "password";
 
-        when(userRepository.existsById(telephone)).thenReturn(false);
         when(phoneValidationService.isValidPhoneNumber(telephone, "RU")).thenReturn(false);
 
         assertThatThrownBy(() -> userService.register(new UserRegisterRequest(telephone, password)))
