@@ -1,10 +1,9 @@
 package io.modicon.smartixtask.application.service
 
+import io.modicon.smartixtask.application.service.PhoneValidationService
 import spock.lang.Specification
 
 class PhoneValidationServiceSpockTest extends Specification {
-    void setup() {
-    }
 
     private PhoneValidationService phoneValidationService = new PhoneValidationService.Base();
 
@@ -25,7 +24,7 @@ class PhoneValidationServiceSpockTest extends Specification {
         def actual = phoneValidationService.isValidPhoneNumber(telephones.each{it}, "RU")
 
         then:
-        actual
+        !actual
 
         where:
         telephones << ["+89520009939", "79520009939",]
